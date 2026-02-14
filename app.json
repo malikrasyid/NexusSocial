@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "NexusSocial",
-    "slug": "NexusSocial",
+    "slug": "nexussocial",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
