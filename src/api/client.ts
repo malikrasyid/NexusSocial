@@ -2,20 +2,16 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
 
-// 1. Determine Base URL based on device
-// Android Emulator uses 10.0.2.2 to access the host machine
-// iOS Simulator uses localhost
-const API_URL = "http://192.168.1.11:3001";// <--- CHANGE THIS
+const API_URL = "http://192.168.1.11:3001";
 
-// 2. Create Axios Instance
 const client = axios.create({
   baseURL: API_URL,
+  timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// 3. Request Interceptor: Attach Token automatically
 client.interceptors.request.use(
   async (config) => {
     const token = await AsyncStorage.getItem('access_token');
