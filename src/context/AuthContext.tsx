@@ -1,19 +1,16 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import client from '../api/client';
-
-interface User {
-  id: string;
-  email: string;
-  fullName?: string;
-}
+import { getMyProfile } from '../api/user';
+import { User } from '../types';
 
 interface AuthContextData {
   user: User | null;
   token: string | null;
   isLoading: boolean;
-  signIn: (token: string, user: User) => Promise<void>;
+  signIn: (token: string) => Promise<void>;
   signOut: () => Promise<void>;
+  refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -24,51 +21,70 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check for stored token on app launch
     loadStorageData();
   }, []);
 
-  async function loadStorageData() {
+  const loadStorageData = async () => {
     try {
-      const storedToken = await SecureStore.getItemAsync('nexus_token');
-      const storedUser = await SecureStore.getItemAsync('nexus_user');
-
-      if (storedToken && storedUser) {
+      const storedToken = await AsyncStorage.getItem('token');
+      if (storedToken) {
         setToken(storedToken);
-        setUser(JSON.parse(storedUser));
-        // Add token to axios headers for future requests
         client.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
+        
+        try {
+          const userProfile = await getMyProfile();
+          setUser(userProfile);
+        } catch (apiError) {
+          console.error('Token expired or invalid', apiError);
+          await signOut(); 
+        }
       }
     } catch (e) {
-      console.log('Error loading auth data', e);
+      console.error('Failed to load auth storage', e);
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
-  const signIn = async (newToken: string, newUser: User) => {
-    setToken(newToken);
-    setUser(newUser);
-    client.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
-    
-    await SecureStore.setItemAsync('nexus_token', newToken);
-    await SecureStore.setItemAsync('nexus_user', JSON.stringify(newUser));
+  const signIn = async (newToken: string) => {
+    try {
+      await AsyncStorage.setItem('token', newToken);
+      setToken(newToken);
+      
+      client.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
+      
+      const userProfile = await getMyProfile();     
+      setUser(userProfile);
+      
+      // Save user to cache if you want offline support
+      await AsyncStorage.setItem('user', JSON.stringify(userProfile));
+
+    } catch (error) {
+      console.error('SignIn Error: Could not fetch profile', error);
+      throw error; 
+    }
   };
 
   const signOut = async () => {
-    await SecureStore.deleteItemAsync('nexus_token');
-    await SecureStore.deleteItemAsync('nexus_user');
+    await AsyncStorage.removeItem('token');
+    await AsyncStorage.removeItem('user');
     setToken(null);
     setUser(null);
     delete client.defaults.headers.common['Authorization'];
   };
 
+  const refreshUser = async () => {
+    if (token) {
+      const data = await getMyProfile();
+      setUser(data);
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, token, isLoading, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, token, isLoading, signIn, signOut, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-// Custom hook for easier usage
 export const useAuth = () => useContext(AuthContext);

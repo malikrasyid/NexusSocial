@@ -1,14 +1,13 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import FeedScreen from '../screens/feed/FeedScreen';
-import CreatePostScreen from '../screens/feed/CreatePostScreen';
+import ProfileScreen from '../screens/profile/ProfileScreen';
 
 const Stack = createNativeStackNavigator();
 
-export const HomeStack = () => {
+export const ProfileStack = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="FeedMain" component={FeedScreen} />
+      <Stack.Screen name="ProfileMain" component={ProfileScreen} />
     </Stack.Navigator>
   );
 };

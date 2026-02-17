@@ -122,8 +122,7 @@ export const PostCard = ({
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
-    marginBottom: 5,
-  },
+    marginBottom: 5,},
   header: {
     flexDirection: 'row',
     alignItems: 'center',

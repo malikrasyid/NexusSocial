@@ -38,8 +38,6 @@ const styles = StyleSheet.create({
   inner: {
     flex: 1,
     // Add a standard horizontal padding for all screens
-    paddingHorizontal: 24,
-    // Android sometimes needs extra padding at the top if StatusBar is translucent
-    paddingTop: Platform.OS === 'android' ? 10 : 0, 
-  },
+    paddingHorizontal: 15,
+    },
 });

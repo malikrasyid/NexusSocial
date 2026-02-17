@@ -9,3 +9,9 @@ export type FeedScreenNavigationProp = NativeStackNavigationProp<{
   FeedMain: undefined;
   CreatePost: undefined;
 }>;
+
+export type ProfileStackParamList = {
+  ProfileMain: undefined;
+  EditProfile: undefined;
+  Settings: undefined;
+};

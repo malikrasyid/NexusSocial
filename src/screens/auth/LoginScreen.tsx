@@ -7,7 +7,6 @@ import { SafeScreenWrapper } from '../../components/shared/SafeScreenWrapper';
 import { Heading, SubText} from '../../components/ui/Typography';
 import { NexusInput } from '../../components/ui/NexusInput';
 import { PrimaryButton } from '../../components/ui/PrimaryButton';
-import client from '../../api/client';
 import { LoadingOverlay } from '../../components/shared/LoadingOverlay';
 import { useAuth } from '../../context/AuthContext';
 import { loginUser } from '../../api/auth';
@@ -22,26 +21,16 @@ const LoginScreen = () => {
   const { signIn } = useAuth();
   
   const handleLogin = async () => {
-    if (!identifier || !password) {
-      Alert.alert('Error', 'Please fill in all fields');
-      return;
-    }
-
-    setIsLoading(true);
-    try { 
-      const data = await loginUser(identifier, password);
-      await signIn(data.access_token, { 
-        id: data.userId || data.sub, 
-        email: identifier.includes('@') ? identifier : '', 
-        fullName: data.username 
-      });
-
-    } catch (error) {
-      Alert.alert('Login Failed');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  setIsLoading(true);
+  try {
+    const data = await loginUser(identifier, password);
+    await signIn(data.access_token); 
+  } catch (error: any) {
+    Alert.alert('Login Failed', error.response?.data?.message || 'Error');
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   return (
     <SafeScreenWrapper>
