@@ -7,13 +7,17 @@ interface NexusInputProps extends TextInputProps {
   isPassword?: boolean;
 }
 
-export const NexusInput = ({ placeholder, isPassword, ...props }: NexusInputProps) => {
+export const NexusInput = ({ placeholder, isPassword, style, multiline, ...props }: NexusInputProps) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   return (
-    <View style={styles.container}>
+    <View style={[
+      styles.container, 
+      multiline && styles.multilineContainer 
+    ]}>
       <TextInput 
         placeholder={placeholder}
         placeholderTextColor="#999"
+        multiline={multiline}
         style={styles.input}
         secureTextEntry={isPassword && !isPasswordVisible}
         {...props}
@@ -38,10 +42,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#F3F4F6',
     borderRadius: 16,
     paddingHorizontal: 20,
-    height: 60,
+    minHeight: 60,
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 16,
+  },
+  multilineContainer: {
+    alignItems: 'flex-start',
+    paddingVertical: 12, 
   },
   input: {
     flex: 1,

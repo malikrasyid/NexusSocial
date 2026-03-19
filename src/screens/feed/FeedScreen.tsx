@@ -51,23 +51,21 @@ const FeedScreen = () => {
   );
 
   return (
-    <SafeScreenWrapper 
-    backgroundColor="#334155" 
-    statusBarColor='light-content' 
-    style={{ paddingHorizontal: 0 }}
-    > 
+    <SafeScreenWrapper> 
       <View style={styles.topBar}>
-        <Heading style={{ fontSize: 24, color: '#1f2937' }}>Nexus</Heading>
-        <View style={styles.topIcons}>
+        <TouchableOpacity onPress={() => navigation.navigate('CreatePost')}>
           <Feather 
-            name="plus-square" 
+            name="plus" 
             size={24} 
             color="#1f2937" 
-            style={{ marginRight: 20 }} 
-            onPress={() => navigation.navigate('CreatePost')}
           />
+        </TouchableOpacity>
+
+        <Heading style={{ fontSize: 24, color: '#1f2937' }}>Nexus</Heading>
+
+        <TouchableOpacity>
           <Feather name="bell" size={24} color="#1f2937" />
-        </View>
+        </TouchableOpacity>
       </View>
 
       {loading && (
@@ -92,6 +90,7 @@ const FeedScreen = () => {
           renderItem={({ item }) => (
             <PostCard 
               id={item._id}
+              userId={item.user._id}
               username={item.user?.username || 'Unknown User'} 
               avatarUrl={item.user?.avatar || 'https://ui-avatars.com/api/?name=User&background=random'}              
               imageUrl={item.imageUrl || ''}              
@@ -103,7 +102,7 @@ const FeedScreen = () => {
           )}
           showsVerticalScrollIndicator={false}
           style={{ backgroundColor: '#ffffff' }}
-          contentContainerStyle={{ paddingBottom: 20 }}
+          contentContainerStyle={{ paddingBottom: 20}}
         />
       )}
     </SafeScreenWrapper>
@@ -117,11 +116,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 25,
-    paddingVertical: 13,
-    backgroundColor: '#ffffff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#f3f4f6',
+    paddingHorizontal: 15,
+    paddingVertical: 12,
+    backgroundColor: '#ffffff'
   },
   topIcons: {
     flexDirection: 'row',

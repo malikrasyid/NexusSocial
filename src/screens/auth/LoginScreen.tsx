@@ -33,7 +33,7 @@ const LoginScreen = () => {
 };
 
   return (
-    <SafeScreenWrapper>
+    <SafeScreenWrapper style={{paddingHorizontal: 15}}>
       <LoadingOverlay visible={isLoading} />
       
       <View style={styles.headerSection}>

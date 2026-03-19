@@ -22,3 +22,17 @@ export interface Post {
   likes: string[];
   createdAt: string;
 }
+
+export interface UserProfile {
+  _id: string;
+  username: string;
+  avatar: string | null;
+  bio: string | null;
+}
+
+export interface SearchUserResult {
+  _id: string;
+  username: string;
+  avatar: string | null;
+  bio: string | null;
+}

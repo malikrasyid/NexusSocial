@@ -74,7 +74,7 @@ const EditProfileScreen = () => {
   };
 
   return (
-    <SafeScreenWrapper>
+    <SafeScreenWrapper style={{paddingHorizontal: 0}}>
       <KeyboardAvoidingView 
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{ flex: 1 }}
@@ -192,6 +192,7 @@ const InputGroup = ({ label, value, onChange, placeholder, numeric, multiline }:
       keyboardType={numeric ? 'numeric' : 'default'}
       multiline={multiline}
       style={multiline ? styles.textArea : undefined}
+      textAlignVertical={multiline ? 'top' : 'center'}
     />
   </View>
 );
@@ -202,11 +203,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 12,
+    paddingHorizontal: 15,
     borderBottomWidth: 1,
     borderColor: '#f3f4f6',
-    marginBottom: 10,
   },
   scrollContent: {
+    padding: 10,
     paddingBottom: 50,
   },
   avatarSection: {
@@ -248,9 +250,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   textArea: {
-    height: 80,
-    textAlignVertical: 'top',
-    paddingTop: 12,
+    height: 100,
   },
   row: {
     flexDirection: 'row',

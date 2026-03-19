@@ -4,11 +4,13 @@ import { Feather, AntDesign } from '@expo/vector-icons';
 import { Divider } from '../shared/Divider';
 import { Label, Body, Caption } from '../ui/Typography';
 import { toggleLike } from '../../api/post'; 
+import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 
 interface PostProps {
   id: string;
+  userId: string;
   username: string;
   avatarUrl: string;
   imageUrl: string;
@@ -19,7 +21,8 @@ interface PostProps {
 }
 
 export const PostCard = ({ 
-    id, 
+    id,
+    userId, 
     username, 
     avatarUrl, 
     imageUrl, 
@@ -29,6 +32,8 @@ export const PostCard = ({
     timeAgo 
 }: PostProps) => {
     
+  const navigation = useNavigation<any>();
+
   const [liked, setLiked] = useState(initialIsLiked);
   const [likeCount, setLikeCount] = useState(initialLikes);
 
@@ -50,10 +55,17 @@ export const PostCard = ({
     <View style={styles.container}>
       {/* 1. Header: Clean & Spaced */}
       <View style={styles.header}>
-        <View style={styles.userInfo}>
-          <Image source={{ uri: avatarUrl }} style={styles.avatar} />
-          <Label style={styles.usernameText}>{username}</Label>
-        </View>
+        <TouchableOpacity 
+          activeOpacity={0.7}
+          onPress={() => {
+            navigation.navigate('UserProfile', { userId: userId });
+          }}
+        >
+          <View style={styles.userInfo}>
+            <Image source={{ uri: avatarUrl }} style={styles.avatar} />
+            <Label style={styles.usernameText}>{username}</Label>
+          </View>
+        </TouchableOpacity>
         <TouchableOpacity hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
           <Feather name="more-horizontal" size={24} color="#000" />
         </TouchableOpacity>

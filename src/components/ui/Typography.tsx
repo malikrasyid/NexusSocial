@@ -1,30 +1,29 @@
 import React from 'react';
-import { Text, StyleSheet, TextStyle } from 'react-native';
+import { Text, StyleSheet, TextProps } from 'react-native';
 
-interface TypographyProps {
+interface TypographyProps extends TextProps {
   children: React.ReactNode;
-  style?: TextStyle;
-  numberOfLines?: number;
+  style?: any;
 }
 
-export const Heading = ({ children, style }: TypographyProps) => (
-  <Text style={[styles.h1, style]}>{children}</Text>
+export const Heading = ({ children, style, ...props }: TypographyProps) => (
+  <Text style={[styles.h1, style]} {...props}>{children}</Text>
 );
 
-export const SubText = ({ children, style }: TypographyProps) => (
-  <Text style={[styles.sub, style]}>{children}</Text>
+export const SubText = ({ children, style, ...props }: TypographyProps) => (
+  <Text style={[styles.sub, style]} {...props}>{children}</Text>
 );
 
-export const Label = ({ children, style }: TypographyProps) => (
-  <Text style={[styles.label, style]}>{children}</Text>
+export const Label = ({ children, style, ...props }: TypographyProps) => (
+  <Text style={[styles.label, style]} {...props}>{children}</Text>
 );
 
-export const Body = ({ children, style, numberOfLines }: TypographyProps) => (
-  <Text style={[styles.body, style]} numberOfLines={numberOfLines}>{children}</Text>
+export const Body = ({ children, style, ...props }: TypographyProps) => (
+  <Text style={[styles.body, style]} {...props}>{children}</Text>
 );
 
-export const Caption = ({ children, style }: TypographyProps) => (
-  <Text style={[styles.caption, style]}>{children}</Text>
+export const Caption = ({ children, style, ...props }: TypographyProps) => (
+  <Text style={[styles.caption, style]} {...props}>{children}</Text>
 );
 
 const styles = StyleSheet.create({

@@ -1,9 +1,9 @@
 import client from './client';
-import { API_URLS } from './endpoints';
+import { API_ENDPOINTS } from './endpoints';
 
 export const getFeed = async () => {
   try {
-    const response = await client.get(API_URLS.FEED);
+    const response = await client.get(API_ENDPOINTS.POSTS.FEED);
     return response.data;
   } catch (error) {
     console.error('Error fetching feed:', error);
@@ -13,7 +13,7 @@ export const getFeed = async () => {
 
 export const getUserPosts = async (userId: string) => {
   try {
-    const response = await client.get(API_URLS.USER_POSTS(userId));
+    const response = await client.get(API_ENDPOINTS.POSTS.USER_POSTS(userId));
     return response.data;
   } catch (error) {
     console.error('Error fetching user posts:', error);
@@ -23,7 +23,7 @@ export const getUserPosts = async (userId: string) => {
 
 export const toggleLike = async (postId: string) => {
   try {
-    const response = await client.put(API_URLS.LIKE_POST(postId));
+    const response = await client.put(API_ENDPOINTS.POSTS.LIKE(postId));
     return response.data;
   } catch (error) {
     console.error('Error toggling like:', error);
@@ -32,7 +32,7 @@ export const toggleLike = async (postId: string) => {
 };
 
 export const createPost = async (data: FormData | any) => {
-  const response = await client.post(API_URLS.CREATE_POST, data, {
+  const response = await client.post(API_ENDPOINTS.POSTS.CREATE, data, {
     headers: {
       // Explicitly telling the backend this is a file upload
       'Content-Type': 'multipart/form-data', 

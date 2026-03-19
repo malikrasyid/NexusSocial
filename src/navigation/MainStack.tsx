@@ -4,13 +4,8 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { HomeStack } from './HomeStack';
 import { ProfileStack } from './ProfileStack';
-
-const SearchScreen = () => (
-  <View style={styles.center}><Text style={styles.text}>Search</Text></View>
-);
-const ChatScreen = () => (
-  <View style={styles.center}><Text style={styles.text}>Messages</Text></View>
-);
+import InboxScreen from '../screens/chat/InboxScreen';
+import { SearchStack } from './SearchStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -34,49 +29,16 @@ export const MainStack = () => {
         />
       <Tab.Screen 
         name="Search" 
-        component={SearchScreen} 
+        component={SearchStack} 
         options={{
           tabBarIcon: ({ color }) => <Feather name="search" size={24} color={color} />,
         }}
       />
       <Tab.Screen 
-        name="Create" 
-        component={View} // Placeholder, usually handled by a listener to open modal
+        name="Messages" 
+        component={InboxScreen} 
         options={{
-          tabBarIcon: ({ focused }) => (
-            <View
-              style={{
-                top: -20, // 1. Naikkan posisi ikon
-                width: 50,
-                height: 50,
-                borderRadius: 18, // Lingkaran sempurna
-                backgroundColor: '#6366f1', // 2. Background Ungu
-                justifyContent: 'center',
-                alignItems: 'center',
-                shadowColor: '#6366f1', // 3. Shadow agar terlihat melayang
-                shadowOffset: { width: 0, height: 4 },
-                shadowOpacity: 0.3,
-                shadowRadius: 4,
-                elevation: 5, // Shadow untuk Android
-              }}
-            >
-              <Feather name="plus" size={28} color="#ffffff" /> 
-              {/* Icon Putih & Lebih Besar */}
-            </View>
-          ),
-        }}
-        listeners={({ navigation }) => ({
-          tabPress: (e) => {
-            e.preventDefault(); // Stop default navigation
-            navigation.navigate('CreatePost');
-          },
-        })}
-      />
-      <Tab.Screen 
-        name="Chat" 
-        component={ChatScreen} 
-        options={{
-          tabBarIcon: ({ color }) => <Feather name="message-square" size={24} color={color} />,
+          tabBarIcon: ({ color }) => <Feather name="message-circle" size={24} color={color} />,
         }}
       />
       <Tab.Screen 

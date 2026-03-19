@@ -1,28 +1,26 @@
 import client from './client';
-import { API_URLS } from './endpoints';
-import { User } from '../types';
+import { API_ENDPOINTS } from './endpoints';
+import { User, UserProfile } from '../types';
 
 // 1. Get Current User Profile
 export const getMyProfile = async () => {
-  const response = await client.get<User>(API_URLS.ME);
+  const response = await client.get<User>(API_ENDPOINTS.USER.ME);
   return response.data;
 };
 
 // 2. Get Any User's Profile (Public)
 export const getUserProfile = async (userId: string) => {
-  const response = await client.get<User>(API_URLS.USER_PROFILE(userId));
+  const response = await client.get<User>(API_ENDPOINTS.USER.PROFILE(userId));
   return response.data;
 };
 
 // 3. Update Text Data (JSON)
-// Backend: @Body() updateDto: UpdateUserDto
 export const updateProfileData = async (data: Partial<User>) => {
-  const response = await client.put(API_URLS.UPDATE_PROFILE, data);
+  const response = await client.put(API_ENDPOINTS.USER.UPDATE_PROFILE, data);
   return response.data;
 };
 
 // 4. Upload Avatar (Multipart/Form-Data)
-// Backend: @UseInterceptors(FileInterceptor('file'))
 export const uploadAvatar = async (imageUri: string) => {
   const formData = new FormData();
   
@@ -37,7 +35,7 @@ export const uploadAvatar = async (imageUri: string) => {
     type,
   });
 
-  const response = await client.put(API_URLS.UPLOAD_AVATAR, formData, {
+  const response = await client.put(API_ENDPOINTS.USER.UPLOAD_AVATAR, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -47,12 +45,23 @@ export const uploadAvatar = async (imageUri: string) => {
 
 // 5. Follow / Unfollow
 export const followUser = async (userId: string) => {
-  const response = await client.post(API_URLS.FOLLOW(userId));
+  const response = await client.post(API_ENDPOINTS.USER.FOLLOW(userId));
   return response.data;
 };
 
 export const unfollowUser = async (userId: string) => {
-  const response = await client.delete(API_URLS.FOLLOW(userId).replace('/follow', '/follow')); 
-  // ^ Note: Check your endpoint.ts to match DELETE route structure
+  const response = await client.delete(API_ENDPOINTS.USER.FOLLOW(userId).replace('/follow', '/follow')); 
+  return response.data;
+};
+
+export const searchUsers = async (query: string): Promise<UserProfile[]> => {
+  if (!query.trim()) return [];
+  
+  const response = await client.get(`/user/search?q=${encodeURIComponent(query)}`);
+  return response.data;
+};
+
+export const getOtherUserProfile = async (userId: string): Promise<UserProfile> => {
+  const response = await client.get(`/user/${userId}`);
   return response.data;
 };

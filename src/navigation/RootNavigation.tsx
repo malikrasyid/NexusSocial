@@ -7,6 +7,7 @@ import { MainStack } from './MainStack';
 import CreatePostScreen from '../screens/feed/CreatePostScreen';
 import EditProfileScreen from '../screens/profile/EditProfileScreen';
 import SettingsScreen from '../screens/setting/SettingScreen';
+import ChatRoomScreen from '../screens/chat/ChatRoomScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,11 +22,9 @@ const AuthenticatedStack = () => {
         <Stack.Screen name="EditProfile" component={EditProfileScreen} />
       </Stack.Group>
 
-      <Stack.Screen 
-        name="Settings" 
-        component={SettingsScreen} 
-        options={{ presentation: 'card' }} 
-      />
+      <Stack.Screen name="Settings" component={SettingsScreen} />
+
+      <Stack.Screen name="ChatRoom" component={ChatRoomScreen} />
 
     </Stack.Navigator>
   );

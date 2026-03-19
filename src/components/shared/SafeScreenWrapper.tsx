@@ -22,7 +22,10 @@ export const SafeScreenWrapper = ({
   statusBarColor = 'dark-content' 
 }: SafeScreenWrapperProps) => {
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor }]}>
+    <SafeAreaView 
+      style={[styles.container, { backgroundColor }]}
+      edges={['top', 'left', 'right']}
+    >
       <StatusBar barStyle={statusBarColor} backgroundColor={backgroundColor} />
       <View style={[styles.inner, style]}>
         {children}
@@ -37,7 +40,5 @@ const styles = StyleSheet.create({
   },
   inner: {
     flex: 1,
-    // Add a standard horizontal padding for all screens
-    paddingHorizontal: 15,
     },
 });

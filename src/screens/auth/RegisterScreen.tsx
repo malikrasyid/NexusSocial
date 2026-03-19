@@ -44,7 +44,7 @@ const RegisterScreen = () => {
   };
 
   return (
-    <SafeScreenWrapper>
+    <SafeScreenWrapper style={{paddingHorizontal:15}}>
       <LoadingOverlay visible={isLoading} />
       
       <View style={styles.headerSection}>
@@ -70,7 +70,12 @@ const RegisterScreen = () => {
           value={password}
           onChangeText={setPassword}
         />
-        <NexusInput placeholder="Confirm Password" isPassword />
+        <NexusInput 
+          placeholder="Confirm Password"
+          isPassword 
+          value={confirmPassword}
+          onChangeText={setConfirmPassword} 
+        />
 
         <View style={{ marginTop: 10 }}>
           <PrimaryButton title="Sign Up" onPress={handleRegister} />

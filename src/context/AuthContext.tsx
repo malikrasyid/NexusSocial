@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import client from '../api/client';
 import { getMyProfile } from '../api/user';
 import { User } from '../types';
+import { initSocket, disconnectSocket } from '../utils/socket';
 
 interface AuthContextData {
   user: User | null;
@@ -59,6 +60,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Save user to cache if you want offline support
       await AsyncStorage.setItem('user', JSON.stringify(userProfile));
 
+      initSocket(newToken);
     } catch (error) {
       console.error('SignIn Error: Could not fetch profile', error);
       throw error; 
@@ -71,6 +73,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setToken(null);
     setUser(null);
     delete client.defaults.headers.common['Authorization'];
+    disconnectSocket();
   };
 
   const refreshUser = async () => {
